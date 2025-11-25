@@ -1,5 +1,76 @@
-.weather {
-  font-family: sans-serif;
-  color: white;
-  text-align: center;
+
+
+header {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 0.5rem solid #fff;
+  align-items: stretch;
+}
+
+h1 {
+  font-size: 6rem;
+  font-weight: bold;
+}
+
+h2 {
+  font-size: 5rem;
+  font-weight: bold;
+}
+
+h3 {
+  font-size: 4rem;
+  font-weight: normal;
+}
+
+h4 {
+  font-size: 3rem;
+  font-weight: normal;
+}
+
+h5 {
+  font-size: 2rem;
+  font-weight: normal;
+}
+
+
+div#zeitDatum,
+div#wetterAktuell {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+div#zeitDatum h1#uhrzeit span#sekunden {
+  font-size: 3rem;
+  position: absolute;
+  padding-left: 5px;
+  padding-top: 0.7rem;
+  font-weight: normal;
+}
+
+div#wetterAktuell div#temp{
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+div#wetterAktuell div#temp img{
+  width: 8rem;
+}
+
+
+div#wetterAktuell div#details {
+  display: flex;
+  justify-content: space-evenly
+}
+
+div#wetterAktuell div#details section {
+  display: flex;
+  align-items: center;
+
+}
+
+div#wetterAktuell div#details section img {
+  width: 5rem;
+
 }
