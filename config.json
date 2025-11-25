@@ -1,0 +1,22 @@
+[{
+  "name": "Beispiel Text",
+  "inputType": "text",
+  "default": "",
+  "placeholder": "Input Text"
+},{
+  "name": "Beispiel checkbox",
+  "inputType": "checkbox",
+  "default": true,
+  "placeholder": ""
+},{
+  "name": "Beispiel select",
+  "inputType": ["auswahl 1", "auswahl 2"],
+  "default": "auswahl 2",
+  "placeholder": ""
+}, {
+  "name": "Beispiel number",
+  "inputType": "number",
+  "default": 0,
+  "placeholder": ""
+}]
+

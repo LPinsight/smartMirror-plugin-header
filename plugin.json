@@ -1,0 +1,7 @@
+{
+  "name": "smartMirror-plugin-template",
+  "version": "v0.0.1-alpha",
+  "repository": "https://github.com/LPinsight/smartMirror-plugin-template",
+  "beschreibung": "Template plugin für smartMirror",
+  "author": "Slibbo"
+}
