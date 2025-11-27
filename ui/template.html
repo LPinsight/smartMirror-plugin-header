@@ -1,33 +1,55 @@
 <link rel="stylesheet" href="style.css">
 
 <header>
-<div id="zeitDatum">
-  <h1 id="uhrzeit">
-    <span id="stundenMinuten">22:23</span>
-    <span id="sekunden">00</span>
-  </h1>
-  <h4 id="datum">Fr, 26.10.2018</h4>
-</div>
-
-<div id="wetterAktuell">
-  <div id="temp">
-    <img id="tempIcon" src="./assets/wi_not-available.svg" alt="">
-    <h1 id="tempAktuell">12.8°C</h1>
-  </div>
-  <div id="details">
-    <section>
-      <img src="./assets/wi_umbrella.svg" alt="">
-      <h4 id="regenwahrscheinlichkeit">40%</h4>
-    </section>
-
-    <section>
-      <img src="./assets/wi_humidity.svg" alt="">
-      <h4 id="luftfeuchtigkeit">70%</h4>
-    </section>
+  <div id="zeitDatum">
+    <h1 id="uhrzeit">
+      <span id="stundenMinuten">22:23</span>
+      <span id="sekunden">00</span>
+    </h1>
+    <h4 id="datum">Fr, 26.10.2018</h4>
   </div>
 
+  <div id="wetterAktuell">
+    <div id="temp">
+      <img id="tempIcon" src="./assets/wi_not-available.svg" alt="">
+      <h1 id="tempAktuell">12.8°C</h1>
+    </div>
+    <div id="details">
+      <section>
+        <img src="./assets/wi_umbrella.svg" alt="">
+        <h4 id="regenwahrscheinlichkeit">40%</h4>
+      </section>
 
-</div>
-
-
+      <section>
+        <img src="./assets/wi_humidity.svg" alt="">
+        <h4 id="luftfeuchtigkeit">70%</h4>
+      </section>
+    </div>
+  </div>
 </header>
+
+<div id="zukunft">
+  <div id="wetter">
+    <section>
+      <h5 id="date-cast1">22:00</h5>
+      <img id="icon-cast1" src="./assets/wi_not-available.svg" alt="">
+    </section>
+    <section>
+      <h5 id="date-cast2">01:00</h5>
+      <img id="icon-cast2" src="./assets/wi_not-available.svg" alt="">
+    </section>
+    <section>
+      <h5 id="date-cast3">04:00</h5>
+      <img id="icon-cast3" src="./assets/wi_not-available.svg" alt="">
+    </section>
+    <section>
+      <h5 id="date-cast4">07:00</h5>
+      <img id="icon-cast4" src="./assets/wi_not-available.svg" alt="">
+    </section>
+  </div>
+
+  <div id="temp">
+    <h5>min. <span id="tempMin">12,6°C</span></h5>
+    <h5>max. <span id="tempMax">16,9°C</span></h5>
+  </div>
+</div>

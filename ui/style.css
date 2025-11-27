@@ -1,5 +1,3 @@
-
-
 header {
   display: flex;
   justify-content: space-between;
@@ -28,7 +26,7 @@ h4 {
 }
 
 h5 {
-  font-size: 2rem;
+  font-size: 2.5rem;
   font-weight: normal;
 }
 
@@ -67,10 +65,38 @@ div#wetterAktuell div#details {
 div#wetterAktuell div#details section {
   display: flex;
   align-items: center;
-
 }
 
 div#wetterAktuell div#details section img {
   width: 5rem;
+}
 
+div#zukunft {
+  border-bottom: 0.5rem solid #fff;
+  /* padding: 1rem 0; */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+div#zukunft div#wetter{
+  display: flex;
+}
+
+div#zukunft div#wetter section{
+  display: flex;
+  align-items: center;
+  padding-right: 2rem;
+}
+
+div#zukunft div#wetter section img{
+  width: 4.5rem;
+}
+
+div#zukunft div#temp{
+  display: flex;
+}
+
+div#zukunft div#temp h5:first-child{
+  padding-right: 2rem;
 }

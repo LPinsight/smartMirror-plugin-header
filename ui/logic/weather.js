@@ -1,29 +1,63 @@
 const lat = 49.926502
 const lon = 8.406923
 const timezone = 'Europe/Berlin'
+const StundenWetterVorhersage = 3
 
-const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max&current=temperature_2m,relative_humidity_2m,weather_code,is_day&timezone=${timezone}&forecast_days=1`
+const dateCast = 'date-cast'
+const iconCast = 'icon-cast'
+
+const daily = 'temperature_2m_max,temperature_2m_min,precipitation_probability_max,temperature_2m_max,temperature_2m_min'
+const hourly = 'weather_code,temperature_2m,is_day'
+const current = 'temperature_2m,relative_humidity_2m,weather_code,is_day,'
+
+const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=${daily}&hourly=${hourly}&current=${current}&timezone=${timezone}&forecast_days=3`
 
 export function getWeatherData(baseURL) {
-  fetch(url)
-    .then(res => res.json())
-    .then(data => {
-      console.log(data);
+     fetch(url)
+     .then(res => res.json())
+     .then(data => {
+          const {temperature_2m: tempAktuell,relative_humidity_2m,weather_code: iconAktuell,is_day} = data.current
+          const {precipitation_probability_max, temperature_2m_min, temperature_2m_max} = data.daily
+          const {time: timeHourString,weather_code: iconHour,temperature_2m: tempHour, is_day: dayHour} = data.hourly
+          const weatherIcon = getIconForWeather(iconAktuell)
 
-      const {temperature_2m,relative_humidity_2m,weather_code,is_day} = data.current
-      const {precipitation_probability_max} = data.daily
-      const weatherIcon = getIconForWeather(weather_code)
+          const now = new Date();
+          now.setMinutes(0,0,0);
 
-      document.getElementById("tempAktuell").textContent = `${temperature_2m}°C`
-      document.getElementById("tempIcon").src = `${baseURL}/assets/icons/${is_day ? weatherIcon.icons.day : weatherIcon.icons.night}` 
+          const futureWeather = timeHourString.map((t, i) => ({
+               date: new Date(t),
+               is_day: dayHour[i],
+               temp: tempHour[i],
+               icons: getIconForWeather(iconHour[i])
+          })).filter(entry => entry.date > now);
 
-      document.getElementById("regenwahrscheinlichkeit").textContent = `${precipitation_probability_max[0]}%`
-      document.getElementById("luftfeuchtigkeit").textContent = `${relative_humidity_2m}%`
-    })
+          document.getElementById("tempAktuell").textContent = `${tempAktuell.toFixed(1)}°C`
+          document.getElementById("tempIcon").src = `${baseURL}/assets/icons/${is_day ? weatherIcon.icons.day : weatherIcon.icons.night}` 
+
+          document.getElementById("regenwahrscheinlichkeit").textContent = `${precipitation_probability_max[0].toFixed(0)}%`
+          document.getElementById("luftfeuchtigkeit").textContent = `${relative_humidity_2m.toFixed(0)}%`
+
+          document.getElementById("tempMin").textContent = `${temperature_2m_min[0].toFixed(1)}°C`
+          document.getElementById("tempMax").textContent = `${temperature_2m_max[0].toFixed(1)}°C`
+
+          for (let i = 0; i < 4; i++) {
+               let time = futureWeather[i*StundenWetterVorhersage].date.toLocaleTimeString("de-DE", {
+                    hour: "2-digit",
+                    minute: "2-digit"
+               });
+
+               document.getElementById(`${dateCast}${i+1}`).textContent = time
+
+               let icon = futureWeather[i*StundenWetterVorhersage].is_day ? futureWeather[i*StundenWetterVorhersage].icons.icons.day : futureWeather[i*StundenWetterVorhersage].icons.icons.night
+
+               document.getElementById(`${iconCast}${i+1}`).src = `${baseURL}/assets/icons/${icon}`
+          }
+
+     })
 }
 
 export function getIconForWeather(code) {
-  return weather_codes[code] || 'wi_not-available'; // fallback
+return weather_codes[code] || 'wi_not-available'; // fallback
 }
 
 const weather_codes = {
