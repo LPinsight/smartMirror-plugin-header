@@ -1,22 +1,38 @@
 [{
-  "name": "Beispiel Text",
+  "name": "Zeitzone",
+  "displayname": "Zeitzone",
   "inputType": "text",
-  "default": "",
-  "placeholder": "Input Text"
+  "default": "Europe/Berlin",
+  "placeholder": "Zeitzone"
 },{
-  "name": "Beispiel checkbox",
+  "name": "Wetter_interval",
+  "displayname": "Wetter aktualisierungsinterval in Minuten",
+  "inputType": "number",
+  "default": 30,
+  "placeholder": ""
+},{
+  "name": "StundenVorhersage",
+  "displayname": "Forecast Stundenabstand",
+  "inputType": "number",
+  "default": 3,
+  "placeholder": ""
+},{
+  "name": "Standort",
+  "displayname": "Spiegel-Standort verwenden?",
   "inputType": "checkbox",
   "default": true,
   "placeholder": ""
 },{
-  "name": "Beispiel select",
-  "inputType": ["auswahl 1", "auswahl 2"],
-  "default": "auswahl 2",
-  "placeholder": ""
-}, {
-  "name": "Beispiel number",
+  "name": "lat",
+  "displayname": "latitude",
   "inputType": "number",
   "default": 0,
-  "placeholder": ""
+  "placeholder": "latitude"
+},{
+  "name": "lon",
+  "displayname": "longitude",
+  "inputType": "number",
+  "default": 0,
+  "placeholder": "longitude"
 }]
 

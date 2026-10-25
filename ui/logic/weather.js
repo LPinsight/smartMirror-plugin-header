@@ -1,8 +1,3 @@
-const lat = 49.926502
-const lon = 8.406923
-const timezone = 'Europe/Berlin'
-const StundenWetterVorhersage = 3
-
 const dateCast = 'date-cast'
 const iconCast = 'icon-cast'
 
@@ -10,9 +5,16 @@ const daily = 'temperature_2m_max,temperature_2m_min,precipitation_probability_m
 const hourly = 'weather_code,temperature_2m,is_day'
 const current = 'temperature_2m,relative_humidity_2m,weather_code,is_day,'
 
-const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=${daily}&hourly=${hourly}&current=${current}&timezone=${timezone}&forecast_days=3`
 
-export function getWeatherData(baseURL) {
+
+export function getWeatherData(config, baseURL) {
+     const timezone = config["Zeitzone"]
+     const StundenWetterVorhersage = config["StundenVorhersage"]
+     const lat = config["lat"]
+     const lon = config["lon"]
+
+     const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=${daily}&hourly=${hourly}&current=${current}&timezone=${timezone}&forecast_days=3`
+
      fetch(url)
      .then(res => res.json())
      .then(data => {
@@ -23,6 +25,7 @@ export function getWeatherData(baseURL) {
 
           const now = new Date();
           now.setMinutes(0,0,0);
+          now.setHours(now.getHours() + 1)
 
           const futureWeather = timeHourString.map((t, i) => ({
                date: new Date(t),
@@ -42,6 +45,7 @@ export function getWeatherData(baseURL) {
 
           for (let i = 0; i < 4; i++) {
                let time = futureWeather[i*StundenWetterVorhersage].date.toLocaleTimeString("de-DE", {
+                    timeZone: timezone,
                     hour: "2-digit",
                     minute: "2-digit"
                });
