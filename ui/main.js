@@ -1,7 +1,8 @@
 class headerPlugin extends HTMLElement {
   async connectedCallback() {
     const config = this.config || {};
-
+    this.timezone = config["timezone"]
+    
     // Basis-URL aus Attribut
     const baseUrl = this.getAttribute('base-url');
     if (!baseUrl) throw new Error("base-url attribute is required");   
@@ -32,15 +33,15 @@ class headerPlugin extends HTMLElement {
     this.weather = weatherModule;
 
     this.updateView()
-    this.time.setCurrentTime(this.timezone);
+    this.time.setCurrentTime(this, this.timezone);
 
-    setInterval(() => this.time.setCurrentTime(this.timezone), 1000); // jede Sekunde
+    setInterval(() => this.time.setCurrentTime(this, this.timezone), 1000); // jede Sekunde
     setInterval(() => this.updateView(), 1000*60* config["Wetter_interval"]); // alle 30 minuten
   }
 
   updateView () {
-    this.time.setCurrentDate(this.timezone);
-    this.weather.getWeatherData(this.config, this.baseUrl)
+    this.time.setCurrentDate(this, this.timezone);
+    this.weather.getWeatherData(this, this.config, this.baseUrl)
   }
 }
 

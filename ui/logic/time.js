@@ -1,4 +1,4 @@
-export function setCurrentTime(timezone) {
+export function setCurrentTime(root, timezone) {  
   const parts = new Intl.DateTimeFormat("de-DE", {
     timeZone: timezone,
     hour: "2-digit",
@@ -11,14 +11,14 @@ export function setCurrentTime(timezone) {
   const minutes = parts.find(part => part.type === "minute").value;
   const seconds = parts.find(part => part.type === "second").value;
 
-  document.getElementById("stundenMinuten").textContent = `${hours}:${minutes}`      
-  document.getElementById("sekunden").textContent = seconds      
+  root.querySelector("#stundenMinuten").textContent = `${hours}:${minutes}`      
+  root.querySelector("#sekunden").textContent = seconds  
 }
 
-export function setCurrentDate(timezone) {
+export function setCurrentDate(root, timezone) {
   const now = new Date();
 
-  document.getElementById("datum").textContent = now.toLocaleDateString("de-DE", {
+  root.querySelector("#datum").textContent = now.toLocaleDateString("de-DE", {
     timeZone: timezone,
     weekday: "short",
     day: "2-digit",

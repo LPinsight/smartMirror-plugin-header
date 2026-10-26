@@ -1,5 +1,5 @@
 [{
-  "name": "Zeitzone",
+  "name": "timezone",
   "displayname": "Zeitzone",
   "inputType": "text",
   "default": "Europe/Berlin",
@@ -17,22 +17,22 @@
   "default": 3,
   "placeholder": ""
 },{
-  "name": "Standort",
+  "name": "system_location",
   "displayname": "Spiegel-Standort verwenden?",
   "inputType": "checkbox",
   "default": true,
   "placeholder": ""
 },{
   "name": "lat",
-  "displayname": "latitude",
-  "inputType": "number",
-  "default": 0,
-  "placeholder": "latitude"
+  "displayname": "Alternative Koordinate (lat)",
+  "inputType": "text",
+  "default": "",
+  "placeholder": "falls abweichend"
 },{
   "name": "lon",
-  "displayname": "longitude",
-  "inputType": "number",
-  "default": 0,
-  "placeholder": "longitude"
+  "displayname": "Alternative Koordinate (lon)",
+  "inputType": "text",
+  "default": "",
+  "placeholder": "falls abweichend"
 }]
 

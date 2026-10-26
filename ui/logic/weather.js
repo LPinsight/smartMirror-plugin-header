@@ -5,10 +5,8 @@ const daily = 'temperature_2m_max,temperature_2m_min,precipitation_probability_m
 const hourly = 'weather_code,temperature_2m,is_day'
 const current = 'temperature_2m,relative_humidity_2m,weather_code,is_day,'
 
-
-
-export function getWeatherData(config, baseURL) {
-     const timezone = config["Zeitzone"]
+export function getWeatherData(root, config, baseURL) {
+     const timezone = config["timezone"]
      const StundenWetterVorhersage = config["StundenVorhersage"]
      const lat = config["lat"]
      const lon = config["lon"]
@@ -16,47 +14,75 @@ export function getWeatherData(config, baseURL) {
      const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=${daily}&hourly=${hourly}&current=${current}&timezone=${timezone}&forecast_days=3`
 
      fetch(url)
-     .then(res => res.json())
+     .then(async res => {
+          if (!res.ok){
+               throw new Error(`Wetter-API antwortet mit HTTP ${res.status}`);
+          }
+
+          const text = await res.text();
+
+          if (!text) {
+               throw new Error(`Wetter-API hat eine leere Antwort geliefert`);
+          }
+
+          return JSON.parse(text)
+     })
      .then(data => {
           const {temperature_2m: tempAktuell,relative_humidity_2m,weather_code: iconAktuell,is_day} = data.current
           const {precipitation_probability_max, temperature_2m_min, temperature_2m_max} = data.daily
           const {time: timeHourString,weather_code: iconHour,temperature_2m: tempHour, is_day: dayHour} = data.hourly
           const weatherIcon = getIconForWeather(iconAktuell)
 
-          const now = new Date();
-          now.setMinutes(0,0,0);
-          now.setHours(now.getHours() + 1)
+          const parts = Object.fromEntries(
+               new Intl.DateTimeFormat("de-DE", {
+                    timeZone: timezone,
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    hourCycle: 'h23'
+               })
+               .formatToParts(new Date())
+               .map(part => [part.type, part.value])
+          )
+
+          const cutoff = new Date(Date.UTC(
+               Number(parts.year),
+               Number(parts.month)-1,
+               Number(parts.day),
+               Number(parts.hour) +1,
+          ))
+
+          const cutoffString = cutoff.toISOString().slice(0,16)
 
           const futureWeather = timeHourString.map((t, i) => ({
-               date: new Date(t),
+               dateString: t,
                is_day: dayHour[i],
                temp: tempHour[i],
                icons: getIconForWeather(iconHour[i])
-          })).filter(entry => entry.date > now);
+          })).filter(entry => entry.dateString > cutoffString);
 
-          document.getElementById("tempAktuell").textContent = `${tempAktuell.toFixed(1)}°C`
-          document.getElementById("tempIcon").src = `${baseURL}/assets/icons/${is_day ? weatherIcon.icons.day : weatherIcon.icons.night}` 
+          root.querySelector("#tempAktuell").textContent = `${tempAktuell.toFixed(1)}°C`
+          root.querySelector("#tempIcon").src = `${baseURL}/assets/icons/${is_day ? weatherIcon.icons.day : weatherIcon.icons.night}` 
 
-          document.getElementById("regenwahrscheinlichkeit").textContent = `${precipitation_probability_max[0].toFixed(0)}%`
-          document.getElementById("luftfeuchtigkeit").textContent = `${relative_humidity_2m.toFixed(0)}%`
+          root.querySelector("#regenwahrscheinlichkeit").textContent = `${precipitation_probability_max[0].toFixed(0)}%`
+          root.querySelector("#luftfeuchtigkeit").textContent = `${relative_humidity_2m.toFixed(0)}%`
 
-          document.getElementById("tempMin").textContent = `${temperature_2m_min[0].toFixed(1)}°C`
-          document.getElementById("tempMax").textContent = `${temperature_2m_max[0].toFixed(1)}°C`
+          root.querySelector("#tempMin").textContent = `${temperature_2m_min[0].toFixed(1)}°C`
+          root.querySelector("#tempMax").textContent = `${temperature_2m_max[0].toFixed(1)}°C`
 
           for (let i = 0; i < 4; i++) {
-               let time = futureWeather[i*StundenWetterVorhersage].date.toLocaleTimeString("de-DE", {
-                    timeZone: timezone,
-                    hour: "2-digit",
-                    minute: "2-digit"
-               });
+               let time = futureWeather[i*StundenWetterVorhersage].dateString.slice(11,16)
 
-               document.getElementById(`${dateCast}${i+1}`).textContent = time
+               root.querySelector(`#${dateCast}${i+1}`).textContent = time
 
                let icon = futureWeather[i*StundenWetterVorhersage].is_day ? futureWeather[i*StundenWetterVorhersage].icons.icons.day : futureWeather[i*StundenWetterVorhersage].icons.icons.night
 
-               document.getElementById(`${iconCast}${i+1}`).src = `${baseURL}/assets/icons/${icon}`
+               root.querySelector(`#${iconCast}${i+1}`).src = `${baseURL}/assets/icons/${icon}`
           }
-
+     })
+     .catch(error => {
+          console.log("Wetterdaten für dieses Widget konnten nicht geladen werden:", error)
      })
 }
 
